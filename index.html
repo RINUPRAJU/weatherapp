@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Cinzel&family=Cinzel+Decorative&family=Josefin+Sans&family=Josefin+Slab:wght@600&family=Mate+SC&family=Montserrat&family=Oxygen+Mono&family=Pangolin&family=Roboto+Mono&family=Ysabeau&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3 col-md-4"></div>
+            <div class="col-xs-3 col-md-4 mt-4 p-5 rounded shadow text-center" style="background-image: linear-gradient(to bottom right, rgb(153, 195, 245), rgb(234, 231, 206));">
+                    <div class="search" style="height: 40px;padding: 10px;align-items: center;">
+                        <input type="text" id="cityName" class="form-control" placeholder="Enter City Name">
+                        <button><img width="25px" src="https://www.freepnglogos.com/uploads/search-png/search-icon-endless-icons-33.png" alt=""></button>
+                    </div>
+                    <div class="error">
+                        <p>Invalid city name</p>
+                    </div>
+                    <div class="weather">
+                        <div class="row">
+                            <div class="col-3"></div>
+                            <div class="col-xs-6 col-md-4 mt-4" style="height: 350px;width: 340px;">
+                                    <img width="200px" height="170px" src="./images/clouds.png" alt="rain image" class="weathericon" >
+                                    <h5 class="temp">10°c</h5>
+                                    <h5 class="city">City Name</h5>
+                            </div>
+                            <div class="col-3"></div>
+                        </div>
+                        <div class="row">     
+                            <div class="col-4 p-2">
+                                <img width="30px" height="30px" src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3231113/humidity-icon-md.png" alt="">
+                                <h5 class="humidity">50%</h5>
+                                <h5>Humidity</h5>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-4 p-2">
+                                <img width="30px" height="30px" src="https://cdn.onlinewebfonts.com/svg/img_315328.png" alt="">
+                                <h5 class="wind">10km/hr</h5>
+                                <h5>Wind Speed</h5>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            <div class="col-xs-3 col-md-4"></div>
+        </div>
+    </div>
+    <script>
+        const apiKey ="321624727fcf2e7184f62fc5dfee7a67";
+        const apiUrl ="https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const searchBox = document.querySelector(".search input");
+        const searchButton = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weathericon");
+
+        async function weatherCheck(city) {
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+            if(response.status == 404) {
+                document.querySelector(".error").style.display = "block";
+                document.querySelector(".weather").style.display = "none";
+            } else {
+
+                var data = await response.json();
+                // console.log(data);
+
+                if(data.weather[0].main == "Clouds") {
+                    weatherIcon.src = "clouds.png";
+                } else if(data.weather[0].main == "Clear"){
+                    weatherIcon.src = "clear.png";
+                } else if(data.weather[0].main == "Rain"){
+                    weatherIcon.src = "rain.png";
+                } else if(data.weather[0].main == "Drizzle"){
+                    weatherIcon.src = "drizzle.png";
+                } else if(data.weather[0].main == "Mist"){
+                    weatherIcon.src = "mist.png";
+                }
+
+                document.querySelector(".error").style.display = "none";
+                document.querySelector(".weather").style.display = "block";
+            }
+            
+
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.wind.speed + " km/hr";
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp)  +"°c";        
+        }
+        
+        searchButton.addEventListener("click",()=>{
+            weatherCheck(searchBox.value);
+        })
+    </script>
+</body>
+</html>

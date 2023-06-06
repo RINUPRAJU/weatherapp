@@ -1,0 +1,36 @@
+body {
+    background: url('https://www.pixelstalk.net/wp-content/uploads/2016/07/Download-Free-Weather-Background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    font-family: 'Josefin Slab', serif;
+}
+.search {
+    display: flex;
+    padding: 10px;
+}
+.search input{
+    padding: 10px 20px;
+    height: 40px;
+    border-radius: 30px;
+}
+.search button {
+    border-radius: 50px;
+    cursor: pointer;
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    color: white;
+}
+.weather {
+    display: none;
+}
+.error {
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: rgb(142, 14, 14);
+    display: none;
+}
